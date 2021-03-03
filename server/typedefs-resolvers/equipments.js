@@ -5,13 +5,13 @@ const database = require('../database');
 const typeDefs = gql`
   type Equipment {
     id: String
-    used_by: String
+    used_by: Role!
     count: Int
-    new_or_used: String
+    new_or_used: NewOrUsed!
   }
   type EquipmentAdv {
     id: ID!
-    used_by: String!
+    used_by: Role!
     count: Int!
     use_rate: Float
     is_new: Boolean!
