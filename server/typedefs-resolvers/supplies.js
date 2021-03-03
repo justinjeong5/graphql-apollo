@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server')
-const database = require('../database');
+const dbWorks = require('../dbWorks');
 
 const typeDefs = gql`
   type Supply {
@@ -9,10 +9,10 @@ const typeDefs = gql`
 `
 const resolvers = {
   Query: {
-    supplies: () => database.supplies,
+    supplies: (parent, args) => dbWorks.getSupplies(args)
   },
   Mutation: {
-
+    deleteSupply: (parent, args) => dbWorks.deleteItem('supplies', args),
   }
 }
 

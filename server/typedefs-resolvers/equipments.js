@@ -1,4 +1,5 @@
 const { gql } = require('apollo-server')
+const dbWorks = require('../dbWorks');
 const database = require('../database');
 
 const typeDefs = gql`
@@ -11,28 +12,10 @@ const typeDefs = gql`
 `
 const resolvers = {
   Query: {
-    equipments: () => database.equipments,
+    equipments: (parent, args) => dbWorks.getEquipments(args),
   },
   Mutation: {
-    deleteEquipment: (parent, args, context, info) => {
-      const deleted = database.equipments
-        .filter((equipment) => equipment.id === args.id)[0]
-      database.equipments = database.equipments
-        .filter((equipment) => equipment.id !== args.id)
-      return deleted
-    },
-    insertEquipment: (parent, args, context, info) => {
-      database.equipments.push(args)
-      return args
-    },
-    editEquipment: (parent, args, context, info) => {
-      return database.equipments
-        .filter((equipment) => equipment.id === args.id)
-        .map((equipment) => {
-          Object.assign(equipment, args)
-          return equipment
-        })[0]
-    },
+    deleteEquipment: (parent, args) => dbWorks.deleteItem('equipment', args),
   }
 }
 
