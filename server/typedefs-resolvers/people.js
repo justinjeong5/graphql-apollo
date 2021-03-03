@@ -15,6 +15,7 @@ const typeDefs = gql`
         tools: [Tool]
         givens: [Given]
     }
+
     input PostPersonInput {
         first_name: String!
         last_name: String!
@@ -26,16 +27,19 @@ const typeDefs = gql`
         from: String!
     }
 `
+
 const resolvers = {
     Query: {
         people: (parent, args) => dbWorks.getPeople(args),
-        peopleFiltered: (parent, args) => dbWorks.getPeople(args),
-        peoplePaginated: (parent, args) => dbWorks.getPeople(args),
+        person: (parent, args) => dbWorks.getPeople(args)[0]
     },
     Mutation: {
         postPerson: (parent, args) => dbWorks.postPerson(args),
+        editPerson: (parent, args) => dbWorks.editPerson(args),
+        deletePerson: (parent, args) => dbWorks.deleteItem('people', args)
     }
 }
+
 module.exports = {
     typeDefs: typeDefs,
     resolvers: resolvers
