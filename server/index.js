@@ -15,6 +15,12 @@ const typeDefs = gql`
       count: Int,
       new_or_used: String
     ): Equipment
+    editEquipment(
+      id: String,
+      used_by: String,
+      count: Int,
+      new_or_used: String
+    ): Equipment
   }
   type Team {
     id: Int
@@ -61,6 +67,14 @@ const resolvers = {
     insertEquipment: (parent, args, context, info) => {
       database.equipments.push(args)
       return args
+    },
+    editEquipment: (parent, args, context, info) => {
+      return database.equipments
+        .filter((equipment) => equipment.id === args.id)
+        .map((equipment) => {
+          Object.assign(equipment, args)
+          return equipment
+        })[0]
     },
   }
 }
